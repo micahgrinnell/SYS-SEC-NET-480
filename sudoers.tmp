@@ -1,0 +1,44 @@
+#
+# This file MUST be edited with the 'visudo' command as root.
+#
+# Please consider adding local content in /etc/sudoers.d/ instead of
+# directly modifying this file.
+#
+# See the man page for details on how to write a sudoers file.
+#
+Defaults	env_reset
+Defaults	mail_badpass
+Defaults	secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+
+# Host alias specification
+Host_Alias	HOST = sys300-micah
+
+# User alias specification
+User_Alias 	MAILADMIN = joe, linda
+User_Alias 	WEBADMIN = joe
+User_Alias 	POWERUSER = tracy
+User_Alias	LINDAMAIL = linda
+
+# Cmnd alias specification
+Cmnd_Alias	MANAGEMAIL = /usr/sbin/postfix reload
+Cmnd_Alias	MANAGEWEB = /bin/systemctl start apache2, /bin/systemctl restart apache2, /bin/systemctl stop apache2
+Cmnd_Alias	WEBSOCKETS = /usr/bin/lsof -i -n, /bin/netstat -pan
+Cmnd_Alias	LINDAMAIL = /usr/sbin/postfix reload, /usr/sbin/postfix start, /usr/sbin/postfix stop
+Cmnd_Alias	PASSCHANGE = /usr/bin/passwd [A-Za-z]*, !/usr/bin/passwd *root*
+Cmnd_Alias	USERCHANGE = /usr/sbin/useradd, /usr/bin/chage -l *, /usr/bin/chage -d *, /usr/bin/chage -E *, /usr/bin/chage -I *, /usr/bin/chage -m *, /usr/bin/chage -M *, /usr/bin/chage -W *
+
+# User privilege specification
+root	ALL=(ALL:ALL) ALL
+
+# Members of the admin group may gain root privileges
+%admin ALL=(ALL) ALL
+
+# Allow members of group sudo to execute any command
+%sudo	ALL=(ALL:ALL) ALL
+
+# See sudoers(5) for more information on "#include" directives:
+MAILADMIN HOST  = NOPASSWD: MANAGEMAIL
+WEBADMIN HOST = NOPASSWD: MANAGEWEB 
+POWERUSER HOST  = PASSCHANGE, WEBSOCKETS, USERCHANGE
+LINDAMAIL HOST  = NOPASSWD: LINDAMAIL
+#includedir /etc/sudoers.d
