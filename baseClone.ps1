@@ -45,7 +45,7 @@ function cloneBases {
 		1 {
 	
 			$newLinkedVM = New-VM -Name $vmname -VM $basevm -LinkedClone -ReferenceSnapshot $snapshot -VMHost $vmhost -Datastore $dstore -Location $folder -ErrorAction Inquire
-			$newvm
+			$newLinkedvm
 		}	
 	
 		#Full clone
