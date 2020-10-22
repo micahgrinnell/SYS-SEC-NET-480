@@ -27,7 +27,7 @@ function configNetworks {
                 Get-NetworkAdapter -VM $vmName -ErrorAction Ignore
                 Write-Host "Enter adapter number (e.g. Network adapter [X])"
                 $numInterface = Read-Host
-                setNetwork($vmName, $numInterface, $preferredNetwork)
+                setNetwork $vmName $numInterface $preferredNetwork
             }
             #get details
             3 {
@@ -60,8 +60,9 @@ function configNetworks {
 function setNetwork([string] $vmName, [int] $numInterface, [string] $preferredNetwork) {
     
     $interface = "Network adapter $numInterface"
-    $networkAdapter = Get-NetworkAdapter -VM $vmName -Name $interface -ErrorAction Ignore
-    $setNetworkAdapter = Set-NetworkAdapter -NetworkAdapter $networkAdapter -NetworkName $networkName -ErrorAction Ignore
+    $vm = Get-VM -Name $vmName
+    $networkAdapter = Get-NetworkAdapter -VM $vm -Name $interface -ErrorAction Ignore
+    $setNetworkAdapter = Set-NetworkAdapter -NetworkAdapter $networkAdapter -NetworkName $preferredNetwork -ErrorAction Ignore
     $setNetworkAdapter
     Start-Sleep -Seconds 5
     configNetworks
