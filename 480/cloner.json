@@ -1,0 +1,11 @@
+{
+    "vcenter_server" : "vcenter.micah.local",
+    "vm_host" : "super7.cyber.local",
+    "base_folder" : "BASE-VMS",
+    "preferred_network" : "480-WAN",
+    "preferred_datastore" : "datastore2-super7",
+    "preferred_snapshot" : "Base",
+    "domain" : "micah.local"
+
+
+}

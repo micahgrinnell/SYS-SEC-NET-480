@@ -72,7 +72,9 @@ function setNetwork([string] $vmName, [int] $numInterface, [string] $preferredNe
 #Parse in vmname
 function getIP([string] $vmName) {
     $vm = Get-VM -Name $vmName
-    Write-Host $vm.Guest.IPAddress[0] hostname=$vm.Name
+    foreach ($t in $vm) {
+        Write-Host $t.Guest.IPAddress[0] hostname=$t
+    }
     Write-Host "Press any key to continue...";
     $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
     configNetworks

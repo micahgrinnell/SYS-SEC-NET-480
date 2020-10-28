@@ -1,8 +1,6 @@
-$myConfig = Get-Content -Raw -Path "/home/micah/Scripts/cloner.json" | ConvertFrom-Json
+$myConfig = Get-Content -Raw -Path "/home/micah/Tech-Journal/480/cloner.json" | ConvertFrom-Json
 function cloneBases {
-	#Try to connect to Server
-	$c = Connect-VIServer -Server $myconfig.vcenter_server -ErrorAction Inquire
-	if ($c) {
+	
 		#once connected display all base-vms
 		Write-Host "Displaying all BASE-VMS:"
 		$baseVMS = Get-VM -Location $myConfig.base_folder | foreach {$_.Name}
@@ -62,18 +60,16 @@ function cloneBases {
 			"n" {
 
 			Break
-		
-			}
-		
 		}
 	}
 }
 
-cloneBases
-	
-
-
-
-
-
-#>
+#Try to connect to Server
+$c = Connect-VIServer -Server $myconfig.vcenter_server -ErrorAction Inquire
+if ($c) {
+	cloneBases
+}
+else {
+	Write-Host "Could not connect to server please try again"
+	break
+}

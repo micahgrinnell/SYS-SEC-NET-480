@@ -1,0 +1,37 @@
+---
+# This playbook configures ubuntu networking
+- name: ubuntu-networking
+  hosts: ubuntu_server
+  tasks:
+    - name: set the hostname
+      hostname:
+        name: "{{hostname}}"
+      become: yes
+
+    - name: add host to hosts  file
+      lineinfile:
+        path: /etc/hosts
+        line: '127.0.1.1 {{hostname}}'
+      become: yes
+
+    - name: push over the networking script
+      template:
+        src: ubuntu/config.yaml
+        dest: '/etc/netplan/'
+        mode: 0644
+        owner: root
+        group: root
+        force: yes
+      become: yes
+
+    - name: delete old file
+      file:
+        path: /etc/netplan/00-installer-config.yaml
+        state: absent
+      become: yes
+
+    - name: restart networking
+      shell: "sudo netplan apply"
+      become: yes
+      async: 1
+      poll: 0
