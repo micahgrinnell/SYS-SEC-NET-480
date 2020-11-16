@@ -1,0 +1,33 @@
+---
+- name: Create a Blue Team Domain Controller
+  hosts: domain_controller
+  gather_facts: no
+  vars_prompt:
+  - name: adminpassword
+    prompt: "What will be the safe mode password?"
+    private: yes
+  
+  tasks:
+    - name: Create new forest
+      win_domain:
+          dns_domain_name: "{{ domain }}"
+          safe_mode_password: "{{ adminpassword }}"
+      register: domain_install
+    
+    - name: Reboot after creation
+      when: domain_install.reboot_required
+      win_reboot:
+        connect_timeout: 15
+        post_reboot_delay: 15
+        reboot_timeout: 200
+        msg: "Server config in process; rebooting..."
+
+    - name: Wait for system to become reachable
+      wait_for_connection:
+        timeout: 900
+    - name: pause for 7  minutes
+      pause:
+        minutes: 7
+    - name: DNS config
+      win_shell: |
+          Add-DnsServerForwarder -IPAddress "{{ gateway }}" -PassThru

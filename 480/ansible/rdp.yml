@@ -1,0 +1,27 @@
+---
+- name: enable rdp
+  hosts: windows_workstation
+  gather_facts: yes
+
+  tasks: 
+    - name: check for RDP
+      win_psmodule:
+        name: xRemoteDesktopAdmin
+        state: present
+
+    - name: enable RDP
+      async: 10
+      poll: 0
+      win_shell:
+        Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -value 0
+
+    - name: Check for xNetworking module
+      win_psmodule:
+        name: xNetworking
+        state: present
+
+    - name: RDP firewall
+      async: 10
+      poll: 0
+      win_shell:
+        Enable-NetFirewallRule -DisplayGroup "Remote Desktop"

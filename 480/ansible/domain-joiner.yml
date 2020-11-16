@@ -1,0 +1,28 @@
+---
+- name: domain-joiner
+  hosts: windows_workstation
+  gather_facts: no
+  vars_prompt:
+    - name: domainadminname
+      prompt: "provide a domin administrator name ex: micah@micah.local"
+      private: no
+    - name: domainpassword
+      prompt: "provide domain joiner account password"
+      private: yes
+  
+  tasks:
+    - name: Change the DNS Server to blue_dns
+      win_shell:
+          Set-DnsClientServerAddress -InterfaceAlias "{{ device }}" -ServerAddress "{{ name_server }}"
+    
+    - ansible.windows.win_domain_membership:
+        dns_domain_name: "{{ domain }}"
+        hostname: "{{ hostname }}"
+        domain_admin_user: "{{ domainadminname }}"
+        domain_admin_password: "{{ domainpassword }}"
+        domain_ou_path: "{{ ou_path }}"
+        state: domain
+      register: domain_state
+
+    - ansible.windows.win_reboot:
+      when: domain_state.reboot_required

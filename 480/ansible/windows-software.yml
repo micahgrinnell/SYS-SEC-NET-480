@@ -1,0 +1,47 @@
+---
+- name: install software
+  hosts: windows_workstation
+  gather_facts: yes
+  
+  tasks:
+    - name: 7zip
+      win_chocolatey:
+        name: 7zip.install
+        state: present
+
+    - name: chrome
+      win_chocolatey:
+        name: googlechrome
+        state: present
+        ignore_checksums: yes
+        
+    - name: install git 
+      win_chocolatey:
+        name: git
+        state: present
+        
+    - name: putty
+      win_chocolatey:
+        name: putty.install
+        state: present
+        
+    - name: notepad++
+      win_chocolatey:
+        name: notepadplusplus.install
+        state: present
+        
+    - name: python3
+      win_chocolatey:
+        name: 7zip
+        state: present
+        
+    - name: visual studio code
+      win_chocolatey:
+        name: vscode
+        state: present
+
+    - name: vlc
+      win_chocolatey:
+        name: vlc
+        state: present
+        
