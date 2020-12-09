@@ -2,7 +2,7 @@ network:
   version: 2
   renderer: networkd
   ethernets:
-    ens160:
+  {{ device }}:
       addresses:
         - {{ lan_ip }}/{{ prefix }}
       gateway4: {{ gateway }}

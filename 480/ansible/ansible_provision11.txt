@@ -1,0 +1,11 @@
+[ubuntu_server]
+192.168.3.110 hostname=super7 
+
+[ubuntu_server:vars]
+lan_ip=192.168.3.17
+device=eno2
+gateway=192.168.3.250
+prefix=24
+name_server=192.168.4.4
+domain=cyber.local
+ansible_user=deployer
