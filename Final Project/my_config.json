@@ -1,0 +1,11 @@
+{
+    "vcenter_server" : "10.0.17.3",
+    "vm_host" : "192.168.3.14",
+    "base_folder" : "BASE-VMS",
+    "preferred_network" : "350-LAN",
+    "preferred_datastore" : "datastore1",
+    "preferred_snapshot" : "Base",
+    "domain" : "micah.local"
+
+
+}
